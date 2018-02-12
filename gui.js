@@ -1,23 +1,12 @@
-import Controls from "./controls.js";
 import Arithemic from "./arithmetic.js";
+import {fonts, colors} from "./constants.js";
+import Controls from "./controls.js";
+import drawNumberLine from "./draw-number-line.js";
 
 let arithmetic;
 let canvas;
 let controls;
 const properties = {};
-const colors = {
-  backgound: "wheat",
-  left: "darkcyan",
-  right: "brown",
-  default: "black",
-  inactive: "tan",
-  active: "white",
-};
-const fonts = {
-  default: "48px arial",
-  fraction: "24px arial",
-};
-
 
 function init() {
   const canvasElement = document.querySelector("canvas");
@@ -27,7 +16,6 @@ function init() {
   properties.center = properties.canvasWidth / 2;
 
   canvas.textAlign = "center";
-  canvas.lineWidth = 3;
 
   arithmetic = new Arithemic(draw);
   controls = new Controls(arithmetic);
@@ -37,6 +25,7 @@ function init() {
 function draw() {
   reset();
   drawNumbers();
+  drawNumberLine(canvas, arithmetic, properties);
 }
 
 function reset() {
@@ -45,8 +34,9 @@ function reset() {
 }
 
 function drawNumbers() {
-  canvas.font = fonts.default;
   const top = 75;
+  canvas.font = fonts.default;
+  canvas.lineWidth = 3;
 
   // Left
   canvas.fillStyle = colors.left;
@@ -81,6 +71,7 @@ function drawNumbers() {
     if (result.denominator !== result.numerator) {
       // Fraction divider
       canvas.strokeStyle = colors.default;
+      canvas.beginPath();
       canvas.moveTo(properties.center + 170, top - 15);
       canvas.lineTo(properties.center + 190, top - 15);
       canvas.stroke();

@@ -48,7 +48,7 @@ export default class Arithmetic {
         return (this.operands.left - this.operands.right).toString().replace("-", "−");
       case "×":
         return this.operands.left * this.operands.right;
-      case "÷": // eslint-disable-line no-case-declarations
+      case "÷": {
         if (this.operands.left === 0) {
           return 0;
         } else if (this.operands.right === 0) {
@@ -71,6 +71,7 @@ export default class Arithmetic {
         }
 
         return result;
+      }
     }
   }
 }
