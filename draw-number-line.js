@@ -8,6 +8,7 @@ export default function drawNumberLine(canvas, arithmetic, properties) {
   switch (arithmetic.operation) {
     case "+": {
       const stepSize = (properties.canvasWidth - 110) / 20 + canvas.lineWidth;
+      canvas.font = fonts.numberLine;
       drawArrow(canvas, 50, top, properties.canvasWidth - 50, top, colors.default);
 
       // Numbers and vertical lines
@@ -17,7 +18,6 @@ export default function drawNumberLine(canvas, arithmetic, properties) {
         canvas.lineTo(50 + i * stepSize, top + 5);
         canvas.stroke();
 
-        canvas.font = fonts.numberLine;
         canvas.fillText(i, 50 + i * stepSize, top + 20);
       }
 
@@ -36,6 +36,7 @@ export default function drawNumberLine(canvas, arithmetic, properties) {
     }
     case "−": {
       const stepSize = (properties.canvasWidth - 110) / 20 + canvas.lineWidth;
+      canvas.font = fonts.numberLine;
       drawArrow(canvas, 50, top, properties.canvasWidth - 50, top, colors.default);
       drawArrow(canvas, 50, top, 50, top, colors.default);
 
@@ -46,7 +47,6 @@ export default function drawNumberLine(canvas, arithmetic, properties) {
         canvas.lineTo(properties.center + i * stepSize, top + 5);
         canvas.stroke();
 
-        canvas.font = fonts.numberLine;
         canvas.fillText(i, properties.center + i * stepSize, top + 20);
       }
 
@@ -64,6 +64,38 @@ export default function drawNumberLine(canvas, arithmetic, properties) {
       break;
     }
     case "×": {
+      const result = arithmetic.getResult();
+
+      canvas.font = fonts.numberLine;
+      drawArrow(canvas, 50, top, properties.canvasWidth - 50, top, colors.default);
+
+      // Zero result
+      if (result === 0) {
+        canvas.beginPath();
+        canvas.moveTo(50, top - 5);
+        canvas.lineTo(50, top + 5);
+        canvas.stroke();
+        canvas.fillText(0, 50, top + 20);
+        return;
+      }
+
+      const stepSize = (properties.canvasWidth - 120) / arithmetic.operands.right;
+
+      // Numbers and vertical lines
+      canvas.beginPath();
+      for (let i = 0; i <= arithmetic.operands.right; ++i) {
+        canvas.moveTo(50 + i * stepSize, top - 5);
+        canvas.lineTo(50 + i * stepSize, top + 5);
+        canvas.stroke();
+
+        if (i > 0) {
+          drawCurve(canvas, 50 + (i - 1) * stepSize, top, 50 + i * stepSize, top, colors.left);
+        }
+
+        canvas.fillStyle = colors.default;
+        canvas.fillText(i * arithmetic.operands.left, 50 + i * stepSize, top + 20);
+      }
+
       break;
     }
     case "÷": {
