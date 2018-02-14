@@ -44,6 +44,49 @@ export default function drawSquares(canvas, arithmetic, properties) {
       break;
     }
     case "×": {
+      if (arithmetic.getResult() === 0) return;
+
+      const left = properties.center - Math.floor((9 * squareSpace) / 2);
+
+      // Left squares
+      canvas.fillStyle = colors.left;
+      for (let i = 0; i < arithmetic.operands.left; ++i) {
+        canvas.fillRect(left + i * squareSpace, top, squareSize, squareSize);
+      }
+
+      // Shared square
+      canvas.moveTo(left, top);
+      canvas.lineTo(left, top + squareSize);
+      canvas.lineTo(left + squareSize, top + squareSize);
+      canvas.moveTo(left, top);
+      canvas.fillStyle = colors.right;
+      canvas.fill();
+
+      // Right squares
+      for (let i = 1; i < arithmetic.operands.right; ++i) {
+        canvas.fillRect(left, top + i * squareSpace, squareSize, squareSize);
+      }
+
+      // Combined squares
+      canvas.beginPath();
+      for (let i = 1; i < arithmetic.operands.left; ++i) {
+        for (let j = 1; j < arithmetic.operands.right; ++j) {
+          canvas.rect(left + i * squareSpace, top + j * squareSpace, squareSize, squareSize);
+        }
+      }
+      const gradient = canvas.createLinearGradient(
+        left + arithmetic.operands.left * squareSpace,
+        top + squareSpace,
+        left + squareSpace,
+        top + arithmetic.operands.right * squareSpace,
+      );
+
+      gradient.addColorStop(0, colors.left);
+      gradient.addColorStop(1, colors.right);
+
+      canvas.fillStyle = gradient;
+      canvas.fill();
+
       break;
     }
     case "÷": {
