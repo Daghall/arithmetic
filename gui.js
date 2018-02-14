@@ -19,7 +19,7 @@ function init() {
   canvas.textAlign = "center";
 
   arithmetic = new Arithemic(draw);
-  controls = new Controls(arithmetic);
+  controls = new Controls(arithmetic, canvas, properties);
   draw();
 }
 
