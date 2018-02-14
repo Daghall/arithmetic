@@ -5,6 +5,8 @@ Demo: https://daghall.github.io/arithmetic/
 | Key | Command |
 | --- | --- |
 | `0-9`   | Set active **operand** |
+| `Up`    | Increase active **operand** |
+| `Down`  | Decrease active **operand** |
 | `Tab`   | Switch active **operand** |
 | `Enter` | Swap **operands** |
 | `Space` | Cycle *operation*: `+`, `−`, `×`, `÷` |

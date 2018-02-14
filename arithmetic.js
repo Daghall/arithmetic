@@ -47,6 +47,16 @@ export default class Arithmetic {
     this.draw();
   }
 
+  increaseActiveOperand() {
+    this.operands[this.activeOperand] = (this.operands[this.activeOperand] + 1) % 10;
+    this.draw();
+  }
+
+  decreaseActiveOperand() {
+    this.operands[this.activeOperand] = (this.operands[this.activeOperand] + 9) % 10;
+    this.draw();
+  }
+
   getResult() {
     switch (this.operation) {
       case "+":

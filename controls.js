@@ -41,6 +41,12 @@ export default class Controls {
         case "/":
           this.arithmetic.setOperation("÷");
           break;
+        case "ArrowUp":
+          this.arithmetic.increaseActiveOperand();
+          break;
+        case "ArrowDown":
+          this.arithmetic.decreaseActiveOperand();
+          break;
       }
     });
   }
