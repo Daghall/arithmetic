@@ -29,6 +29,18 @@ export default class Controls {
         case " ":
           this.arithmetic.switchOperation();
           break;
+        case "+":
+          this.arithmetic.setOperation("+");
+          break;
+        case "-":
+          this.arithmetic.setOperation("−");
+          break;
+        case "*":
+          this.arithmetic.setOperation("×");
+          break;
+        case "/":
+          this.arithmetic.setOperation("÷");
+          break;
       }
     });
   }

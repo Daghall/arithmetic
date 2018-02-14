@@ -40,6 +40,11 @@ export default class Arithmetic {
     this.draw();
   }
 
+  setOperation(operation) {
+    this.operation = operation;
+    this.draw();
+  }
+
   getResult() {
     switch (this.operation) {
       case "+":
