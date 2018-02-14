@@ -1,3 +1,5 @@
+import divide from "./divide.js";
+
 export default class Arithmetic {
   constructor(drawCallBack) {
     this.activeOperand = "left";
@@ -60,22 +62,7 @@ export default class Arithmetic {
           return "?";
         }
 
-        if (this.operands.left % this.operands.right === 0) {
-          return this.operands.left / this.operands.right;
-        }
-
-        const result = {
-          integer: Math.floor(this.operands.left / this.operands.right),
-          numerator: this.operands.left % this.operands.right,
-          denominator: this.operands.right,
-        };
-
-        if (result.denominator % result.numerator === 0) {
-          result.denominator /= result.numerator;
-          result.numerator = 1;
-        }
-
-        return result;
+        return divide(this.operands.left, this.operands.right);
       }
     }
   }
