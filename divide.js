@@ -9,9 +9,17 @@ export default function divide(left, right) {
     denominator: right,
   };
 
-  if (result.denominator % result.numerator === 0) {
-    result.denominator /= result.numerator;
-    result.numerator = 1;
+  let gcd = 0;
+
+  for (let i = 1; i <= Math.min(result.numerator, result.denominator - result.numerator); ++i) {
+    if (result.numerator % i === 0 && result.denominator % i === 0) {
+      gcd = i;
+    }
+  }
+
+  if (gcd > 0) {
+    result.denominator /= gcd;
+    result.numerator /= gcd;
   }
 
   return result;
