@@ -1,6 +1,7 @@
 export const colors = {
   backgound: "wheat",
   left: "darkcyan",
+  leftBlank: "#c4cbaa",
   right: "brown",
   default: "black",
   inactive: "tan",
