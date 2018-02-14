@@ -2,6 +2,7 @@ import Arithemic from "./arithmetic.js";
 import {fonts, colors} from "./constants.js";
 import Controls from "./controls.js";
 import drawNumberLine from "./draw-number-line.js";
+import drawSquares from "./draw-squares.js";
 
 let arithmetic;
 let canvas;
@@ -26,6 +27,7 @@ function draw() {
   reset();
   drawNumbers();
   drawNumberLine(canvas, arithmetic, properties);
+  drawSquares(canvas, arithmetic, properties);
 }
 
 function reset() {
