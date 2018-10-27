@@ -30,7 +30,20 @@ export default class Controls {
   }
 
   setupEventListeners() {
+    const preventDefaultKeys = [
+      "Tab",
+      " ",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+    ];
+
     window.addEventListener("keydown", (event) => {
+      if (preventDefaultKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+
       switch (event.key) {
         case "0":
         case "1":
@@ -48,7 +61,6 @@ export default class Controls {
         case "Tab":
           this.arithmetic.changeOperand();
           this.registerKey("tab");
-          event.preventDefault();
           break;
         case "Enter":
           this.arithmetic.swapOperands();
