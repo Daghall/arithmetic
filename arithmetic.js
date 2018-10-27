@@ -66,10 +66,10 @@ export default class Arithmetic {
       case "×":
         return this.operands.left * this.operands.right;
       case "÷": {
-        if (this.operands.left === 0) {
-          return 0;
-        } else if (this.operands.right === 0) {
+        if (this.operands.right === 0) {
           return "?";
+        } else if (this.operands.left === 0) {
+          return 0;
         }
 
         return divide(this.operands.left, this.operands.right);
