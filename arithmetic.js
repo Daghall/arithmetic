@@ -4,8 +4,8 @@ export default class Arithmetic {
   constructor(drawCallBack) {
     this.activeOperand = "left";
     this.operands = {
-      left: 0,
-      right: 0
+      left: randomInt(1, 9),
+      right: randomInt(1, 9),
     };
 
     this.operations = [
@@ -14,7 +14,7 @@ export default class Arithmetic {
       "×",
       "÷",
     ];
-    this.operation = this.operations[0];
+    this.operation = this.operations[randomInt(3)];
 
     this.draw = drawCallBack;
   }
@@ -82,4 +82,11 @@ export default class Arithmetic {
       }
     }
   }
+}
+
+function randomInt(from, to) {
+  const min = to ? from : 0;
+  const max = to ? to - from : from;
+
+  return Math.round(Math.random() * max) + min;
 }
