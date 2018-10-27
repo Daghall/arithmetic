@@ -19,7 +19,13 @@ export default class Arithmetic {
     this.draw = drawCallBack;
   }
 
-  changeOperand() {
+  changeOperand(operand) {
+    if (operand) {
+      this.activeOperand = operand;
+      this.draw();
+      return;
+    }
+
     this.activeOperand = this.activeOperand === "left" ? "right" : "left";
     this.draw();
   }

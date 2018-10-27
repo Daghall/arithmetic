@@ -7,6 +7,8 @@ Demo: https://daghall.github.io/arithmetic/
 | `0-9`   | Set active **operand** |
 | `Up`    | Increase active **operand** |
 | `Down`  | Decrease active **operand** |
+| `Left`  | Switch to left **operand** |
+| `Right` | Switch to right **operand** |
 | `Tab`   | Switch active **operand** |
 | `Enter` | Swap **operands** |
 | `Space` | Cycle *operation*: `+`, `−`, `×`, `÷` |

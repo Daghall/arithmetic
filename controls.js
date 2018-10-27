@@ -83,9 +83,11 @@ export default class Controls {
           this.registerKey("down");
           break;
         case "ArrowLeft":
+          this.arithmetic.changeOperand("left");
           this.registerKey("left");
           break;
         case "ArrowRight":
+          this.arithmetic.changeOperand("right");
           this.registerKey("right");
           break;
         case "a":
