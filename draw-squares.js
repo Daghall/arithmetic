@@ -1,4 +1,5 @@
 import {colors} from "./constants.js";
+import divide from "./divide.js";
 
 export default function drawSquares(canvas, arithmetic, properties) {
   const top = 220;
@@ -90,6 +91,41 @@ export default function drawSquares(canvas, arithmetic, properties) {
       break;
     }
     case "÷": {
+      if (arithmetic.operands.left === 0 || arithmetic.operands.right === 0) return;
+
+      const left = properties.center - Math.floor(squareSpace * arithmetic.operands.left / 2);
+      const result = divide(arithmetic.operands.left, arithmetic.operands.right);
+      let leftSquares;
+      let drawFraction;
+
+      if (typeof result !== "object") {
+        leftSquares = result;
+      } else {
+        leftSquares = result.integer;
+        drawFraction = true;
+      }
+
+      canvas.fillStyle = colors.left;
+      for (let i = 0; i < leftSquares; ++i) {
+        canvas.fillRect(left + i * squareSpace, top, squareSize, squareSize);
+      }
+
+      if (arithmetic.operands.right > 1) {
+        const rightSquares = arithmetic.operands.left - leftSquares;
+
+        canvas.fillStyle = colors.leftBlank;
+        for (let i = 0; i < rightSquares; ++i) {
+          canvas.fillRect(left + (leftSquares) * squareSpace + i * squareSpace, top, squareSize, squareSize);
+        }
+      }
+
+      // Draw fraction square on top of leftmost right-square
+      if (drawFraction) {
+        const numeratorSquareSize = ((result.numerator / result.denominator) * squareSize);
+
+        canvas.fillStyle = colors.left;
+        canvas.fillRect(left + leftSquares * squareSpace, top, numeratorSquareSize, squareSize);
+      }
       break;
     }
   }
