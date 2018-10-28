@@ -1,35 +1,32 @@
-export default class Controls {
-  constructor(arithmetic, canvas, properties) {
-    this.arithmetic = arithmetic;
-    this.setupEventListeners();
-    this.properties = properties;
-    this.canvas = canvas;
-    this.keySequence = [];
+export default function Controls(arithmetic, canvas, properties) {
+  let keySequence = [];
+  let gradiusInterval;
+
+  setupEventListeners();
+
+  function registerKey(key) {
+    keySequence.push(key);
   }
 
-  registerKey(key) {
-    this.keySequence.push(key);
+  function resetKeySequence() {
+    keySequence = [];
   }
 
-  resetKeySequence() {
-    this.keySequence = [];
-  }
-
-  konami() {
+  function gradius() {
     const r1 = Math.random();
     const r2 = Math.random();
     const r3 = Math.random();
     const r4 = Math.random();
     const r5 = Math.random();
     const r6 = Math.random();
-    const x = this.properties.canvasWidth * r1;
-    const y = this.properties.canvasHeight * r2;
-    this.canvas.font = `${r3 * 60}px arial`;
-    this.canvas.fillStyle = `#${Math.round(r4 * 255).toString(16)}${Math.round(r5 * 255).toString(16)}${Math.round(r6 * 256).toString(16)}`;
-    this.canvas.fillText([78, 69, 82, 68].map((n) => String.fromCharCode(n)).join(""), x, y);
+    const x = properties.canvasWidth * r1;
+    const y = properties.canvasHeight * r2;
+    canvas.font = `${r3 * 60}px arial`;
+    canvas.fillStyle = `#${Math.round(r4 * 255).toString(16)}${Math.round(r5 * 255).toString(16)}${Math.round(r6 * 256).toString(16)}`;
+    canvas.fillText([78, 69, 82, 68].map((n) => String.fromCharCode(n)).join(""), x, y);
   }
 
-  setupEventListeners() {
+  function setupEventListeners() {
     const preventDefaultKeys = [
       "Tab",
       " ",
@@ -55,90 +52,90 @@ export default class Controls {
         case "7":
         case "8":
         case "9":
-          this.arithmetic.setOperand(event.key);
-          this.registerKey("number");
+          arithmetic.setOperand(event.key);
+          registerKey("number");
           break;
         case "Tab":
-          this.arithmetic.changeOperand();
-          this.registerKey("tab");
+          arithmetic.changeOperand();
+          registerKey("tab");
           break;
         case "Enter":
-          this.arithmetic.swapOperands();
-          this.registerKey("enter");
+          arithmetic.swapOperands();
+          registerKey("enter");
           break;
         case " ":
-          this.arithmetic.switchOperation();
-          this.registerKey("space");
+          arithmetic.switchOperation();
+          registerKey("space");
           break;
         case "+":
-          this.arithmetic.setOperation("+");
-          this.registerKey("operation");
+          arithmetic.setOperation("+");
+          registerKey("operation");
           break;
         case "-":
-          this.arithmetic.setOperation("−");
-          this.registerKey("operation");
+          arithmetic.setOperation("−");
+          registerKey("operation");
           break;
         case "*":
-          this.arithmetic.setOperation("×");
-          this.registerKey("operation");
+          arithmetic.setOperation("×");
+          registerKey("operation");
           break;
         case "/":
-          this.arithmetic.setOperation("÷");
-          this.registerKey("operation");
+          arithmetic.setOperation("÷");
+          registerKey("operation");
           break;
         case "ArrowUp":
-          this.arithmetic.increaseActiveOperand();
-          this.registerKey("up");
+          arithmetic.increaseActiveOperand();
+          registerKey("up");
           break;
         case "ArrowDown":
-          this.arithmetic.decreaseActiveOperand();
-          this.registerKey("down");
+          arithmetic.decreaseActiveOperand();
+          registerKey("down");
           break;
         case "ArrowLeft":
-          this.arithmetic.changeOperand("left");
-          this.registerKey("left");
+          arithmetic.changeOperand("left");
+          registerKey("left");
           break;
         case "ArrowRight":
-          this.arithmetic.changeOperand("right");
-          this.registerKey("right");
+          arithmetic.changeOperand("right");
+          registerKey("right");
           break;
         case "a":
-          this.registerKey("a");
+          registerKey("a");
           break;
         case "b":
-          this.registerKey("b");
+          registerKey("b");
           break;
         default:
           console.log("Unused key: %s", event.key); // eslint-disable-line no-console
       }
 
       // Look for key sequence
-      const keySequence = this.keySequence.join(">");
-      switch (keySequence) {
+      const currentKeySequence = keySequence.join(">");
+      switch (currentKeySequence) {
         case "number":
           break;
         case "number>operation":
-          if (this.arithmetic.activeOperand === "left") {
-            this.arithmetic.changeOperand();
+          if (arithmetic.activeOperand === "left") {
+            arithmetic.changeOperand();
           } else {
-            this.resetKeySequence();
+            resetKeySequence();
           }
           break;
         case "number>operation>number":
-          if (this.arithmetic.activeOperand === "right") {
-            this.arithmetic.changeOperand();
-          } else {
-            this.resetKeySequence();
+          if (arithmetic.activeOperand === "right") {
+            arithmetic.changeOperand();
           }
+
+          resetKeySequence();
           break;
         case "up>up>down>down>left>right>left>right>b>a":
-          this.konamiInterval = setInterval(this.konami.bind(this), 0);
-          this.resetKeySequence();
+          gradiusInterval = setInterval(gradius.bind(canvas), 0);
+          resetKeySequence();
           break;
         default:
-          clearInterval(this.konamiInterval);
-          if (!"up>up>down>down>left>right>left>right>b>a".startsWith(keySequence)) {
-            this.resetKeySequence();
+          clearInterval(gradiusInterval);
+          if (!"up>up>down>down>left>right>left>right>b>a".startsWith(currentKeySequence)) {
+            resetKeySequence();
           }
       }
     });

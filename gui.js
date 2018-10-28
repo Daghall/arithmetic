@@ -1,12 +1,11 @@
 import Arithemic from "./arithmetic.js";
 import {fonts, colors} from "./constants.js";
-import Controls from "./controls.js";
+import controls from "./controls.js";
 import drawNumberLine from "./draw-number-line.js";
 import drawSquares from "./draw-squares.js";
 
 let arithmetic;
 let canvas;
-let controls;
 const properties = {};
 
 function init() {
@@ -19,7 +18,7 @@ function init() {
   canvas.textAlign = "center";
 
   arithmetic = new Arithemic(draw);
-  controls = new Controls(arithmetic, canvas, properties);
+  controls(arithmetic, canvas, properties);
   draw();
 }
 
