@@ -2,7 +2,7 @@ import {colors} from "./constants.js";
 import divide from "./divide.js";
 
 export default function drawSquares(canvas, arithmetic, properties) {
-  const top = 220;
+  const top = 300;
   const squareSize = 15;
   const squareSpace = 20;
 

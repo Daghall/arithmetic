@@ -2,7 +2,7 @@ import {fonts, colors} from "./constants.js";
 import divide from "./divide.js";
 
 export default function drawNumberLine(canvas, arithmetic, properties) {
-  const top = 150;
+  const top = 200;
   canvas.strokeStyle = colors.default;
   canvas.lineWidth = 2;
 
