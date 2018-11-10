@@ -105,6 +105,9 @@ export default function Controls(arithmetic, canvas, properties) {
         case "b":
           registerKey("b");
           break;
+        case ":":
+          arithmetic.toggleVisualization();
+          break;
         default:
           console.log("Unused key: %s", event.key); // eslint-disable-line no-console
       }

@@ -16,6 +16,7 @@ export default class Arithmetic {
     ];
     this.operation = this.operations[randomInt(3)];
 
+    this.visualize = true;
     this.draw = drawCallBack;
   }
 
@@ -81,6 +82,11 @@ export default class Arithmetic {
         return divide(this.operands.left, this.operands.right);
       }
     }
+  }
+
+  toggleVisualization() {
+    this.visualize = !this.visualize;
+    this.draw();
   }
 }
 

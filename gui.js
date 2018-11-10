@@ -25,8 +25,13 @@ function init() {
 function draw() {
   reset();
   drawNumbers();
-  drawNumberLine(canvas, arithmetic, properties);
-  drawSquares(canvas, arithmetic, properties);
+
+  if (arithmetic.visualize) {
+    drawNumberLine(canvas, arithmetic, properties);
+    drawSquares(canvas, arithmetic, properties);
+  } else {
+    drawBinary();
+  }
 }
 
 function reset() {
@@ -83,6 +88,110 @@ function drawNumbers() {
       canvas.fillText(result.denominator || result, properties.center + 180, top + 10);
     }
   }
+}
+
+function drawBinary() {
+  let leftOffset;
+  const top = 125;
+  const oldTextAlign = canvas.textAlign;
+
+  const left = arithmetic.operands.left.toString(2);
+  const right = arithmetic.operands.right.toString(2);
+
+  const leftPadding = Array(8).fill().map((_, i) => i >= 8 - left.length ? " " : "0").join("");
+  const rightPadding = Array(8).fill().map((_, i) => i >= 8 - right.length ? " " : "0").join("");
+
+  let result = arithmetic.getResult();
+  let remainder = null;
+
+  switch (typeof result) {
+    case "object":
+      result = result.integer;
+      remainder = (arithmetic.operands.left % arithmetic.operands.right).toString(2);
+      break;
+    case "string":
+      // Division by zero
+      if (result === "?") {
+        result = "????????";
+        break;
+      }
+
+      // Negative number
+      result = parseInt(result.replace("−", "-"));
+
+      if (result < 0) {
+        // Two's complement
+        result *= -1;
+        result ^= 0xFF;
+        ++result;
+      }
+  }
+
+  if (typeof result === "number") {
+    result = result.toString(2);
+  }
+
+  result = result.toString(2);
+  const resultPadding = Array(8).fill().map((_, i) => i >= 8 - result.length ? " " : "0").join("");
+
+  canvas.font = fonts.console;
+
+  // Left operand
+  leftOffset = properties.center - 20;
+  canvas.textAlign = "right";
+  canvas.fillStyle = colors.left;
+  canvas.fillText(left, leftOffset, top);
+
+  // Left padding
+  canvas.fillStyle = colors.leftBlank;
+  canvas.fillText(leftPadding, leftOffset, top);
+
+  // Operation
+  canvas.textAlign = oldTextAlign;
+  canvas.fillStyle = colors.default;
+  canvas.fillText(arithmetic.operation, properties.center, top);
+
+  // Right operand
+  leftOffset = properties.center + 80;
+  canvas.textAlign = "right";
+  canvas.fillStyle = colors.right;
+  canvas.fillText(right, leftOffset, top);
+
+  // Right padding
+  canvas.fillStyle = colors.rightBlank;
+  canvas.fillText(rightPadding, leftOffset, top);
+
+  // Equals
+  canvas.textAlign = oldTextAlign;
+  canvas.fillStyle = colors.default;
+  canvas.fillText("=", properties.center + 100, top);
+
+  // Result
+  leftOffset = properties.center + 180;
+  canvas.textAlign = "right";
+  canvas.fillStyle = colors.default;
+  canvas.fillText(result, leftOffset, top);
+
+  // Result padding
+  canvas.fillStyle = colors.defaultBlank;
+  canvas.fillText(resultPadding, leftOffset, top);
+
+  // Remainder
+  if (remainder) {
+    const remainderPadding = Array(8).fill().map((_, i) => i >= 8 - remainder.length ? " " : "0").join("");
+    leftOffset = properties.center + 260;
+    canvas.textAlign = "right";
+    canvas.fillStyle = colors.default;
+    canvas.fillText(remainder, leftOffset, top);
+    canvas.fillText("r         ", leftOffset, top);
+
+    // Remainder padding
+    canvas.fillStyle = colors.defaultBlank;
+    canvas.fillText(remainderPadding, leftOffset, top);
+  }
+
+  // Restore textAlign
+  canvas.textAlign = oldTextAlign;
 }
 
 init();
