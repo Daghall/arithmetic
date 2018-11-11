@@ -8,6 +8,12 @@ let arithmetic;
 let canvas;
 const properties = {};
 
+const numeralSystems = [
+  {name: "Binary", base: 2, length: 8, top: 125},
+  {name: "Octal", base: 8, length: 3, top: 150, prefix: "\\"},
+  {name: "Hexadecimal", base: 16, length: 2, top: 175, prefix: "0x"},
+];
+
 function init() {
   const canvasElement = document.querySelector("canvas");
   canvas = canvasElement.getContext("2d");
@@ -30,7 +36,9 @@ function draw() {
     drawNumberLine(canvas, arithmetic, properties);
     drawSquares(canvas, arithmetic, properties);
   } else {
-    drawBinary();
+    numeralSystems.forEach((system) => {
+      drawNumeral(system);
+    });
   }
 }
 
@@ -90,16 +98,15 @@ function drawNumbers() {
   }
 }
 
-function drawBinary() {
+function drawNumeral({name, base, length, top, prefix}) {
   let leftOffset;
-  const top = 125;
   const oldTextAlign = canvas.textAlign;
 
-  const left = arithmetic.operands.left.toString(2);
-  const right = arithmetic.operands.right.toString(2);
+  const left = arithmetic.operands.left.toString(base);
+  const right = arithmetic.operands.right.toString(base);
 
-  const leftPadding = Array(8).fill().map((_, i) => i >= 8 - left.length ? " " : "0").join("");
-  const rightPadding = Array(8).fill().map((_, i) => i >= 8 - right.length ? " " : "0").join("");
+  let leftPadding = Array(length).fill().map((_, i) => i >= length - left.length ? " " : "0").join("");
+  let rightPadding = Array(length).fill().map((_, i) => i >= length - right.length ? " " : "0").join("");
 
   let result = arithmetic.getResult();
   let remainder = null;
@@ -107,12 +114,12 @@ function drawBinary() {
   switch (typeof result) {
     case "object":
       result = result.integer;
-      remainder = (arithmetic.operands.left % arithmetic.operands.right).toString(2);
+      remainder = (arithmetic.operands.left % arithmetic.operands.right).toString(base);
       break;
     case "string":
       // Division by zero
       if (result === "?") {
-        result = "????????";
+        result = Array(length).fill("?").join("");
         break;
       }
 
@@ -128,13 +135,25 @@ function drawBinary() {
   }
 
   if (typeof result === "number") {
-    result = result.toString(2);
+    result = result.toString(base);
   }
 
-  result = result.toString(2);
-  const resultPadding = Array(8).fill().map((_, i) => i >= 8 - result.length ? " " : "0").join("");
+  result = result.toString(base).toUpperCase();
+  let resultPadding = Array(length).fill().map((_, i) => i >= length - result.length ? " " : "0").join("");
 
   canvas.font = fonts.console;
+
+  if (prefix) {
+    leftPadding = prefix + leftPadding;
+    rightPadding = prefix + rightPadding;
+    resultPadding = prefix + resultPadding;
+  }
+
+  // Name
+  leftOffset = properties.center - 175;
+  canvas.textAlign = "left";
+  canvas.fillStyle = colors.default;
+  canvas.fillText(name, leftOffset, top);
 
   // Left operand
   leftOffset = properties.center - 20;
@@ -178,7 +197,10 @@ function drawBinary() {
 
   // Remainder
   if (remainder) {
-    const remainderPadding = Array(8).fill().map((_, i) => i >= 8 - remainder.length ? " " : "0").join("");
+    let remainderPadding = Array(length).fill().map((_, i) => i >= length - remainder.length ? " " : "0").join("");
+    if (prefix) {
+      remainderPadding = prefix + remainderPadding;
+    }
     leftOffset = properties.center + 260;
     canvas.textAlign = "right";
     canvas.fillStyle = colors.default;
