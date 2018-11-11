@@ -105,6 +105,9 @@ export default function Controls(arithmetic, canvas, properties) {
         case "b":
           registerKey("b");
           break;
+        case "r":
+          arithmetic.randomize();
+          break;
         case ":":
           arithmetic.toggleVisualization();
           break;

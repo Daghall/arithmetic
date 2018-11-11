@@ -88,6 +88,14 @@ export default class Arithmetic {
     this.visualize = !this.visualize;
     this.draw();
   }
+
+  randomize() {
+    this.operands.left = randomInt(1, 9);
+    this.operands.right = randomInt(1, 9);
+    this.operation = this.operations[randomInt(3)];
+
+    this.draw();
+  }
 }
 
 function randomInt(from, to) {

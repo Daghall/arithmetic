@@ -17,6 +17,7 @@ Demo: https://daghall.github.io/arithmetic/
 | `*`     | Set *operation* to `×`|
 | `/`     | Set *operation* to `÷`|
 | `:`     | Toggle visualization mode|
+| `r`     | Randomize operands and operation|
 
 `0-9` followed by `+`, `−`, `×` or `÷` automatically switches active operand,
 and switches back if followed by `0-9` again.
