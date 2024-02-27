@@ -10,7 +10,7 @@ const properties = {};
 
 const numeralSystems = [
   {name: "Binary", base: 2, length: 8, top: 125},
-  {name: "Octal", base: 8, length: 3, top: 150, prefix: "\\"},
+  {name: "Octal", base: 8, length: 3, top: 150, prefix: "0o"},
   {name: "Hexadecimal", base: 16, length: 2, top: 175, prefix: "0x"},
 ];
 
@@ -131,6 +131,8 @@ function drawNumeral({name, base, length, top, prefix}) {
         result *= -1;
         result ^= 0xFF;
         ++result;
+        // Force octal numbers to begin with 7
+        result |= (base === 8) ? 0o700 : 0;
       }
   }
 
